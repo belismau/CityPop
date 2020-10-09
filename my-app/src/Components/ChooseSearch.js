@@ -1,5 +1,6 @@
 import React from 'react'
 import './ChooseSearch.css'
+import SearchBar from './SearchBar'
 
 class ChooseSearch extends React.Component {
     constructor() {
@@ -44,9 +45,10 @@ class ChooseSearch extends React.Component {
             )
         } else {
             return (
-                <div>
-                    <input placeholder={this.state.placeholder}></input>
-                </div>
+                <SearchBar 
+                    newPlaceholder={this.state.placeholder}
+                    countrySearch={this.state.countrySearch}
+                />
             )
         }
     }
