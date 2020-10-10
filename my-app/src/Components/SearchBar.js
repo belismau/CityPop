@@ -49,7 +49,7 @@ class SearchBar extends React.Component {
                             countryCode: subroot.countryCode,
                             countryName: subroot.countryName
                         })
-                        console.log('This is a country-search')
+                        this.fetchCountryInfo()
                     } else {
                         this.setStateForNoInfo(true)
                     }   
@@ -72,6 +72,37 @@ class SearchBar extends React.Component {
                 }
             }
 
+        })
+        .catch(console.log)
+    }
+
+
+    fetchCountryInfo() {
+        fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&country=' + this.state.countryCode + '&orderby=population&username=spopre2')
+        .then(res => res.json())
+        .then((data) => {
+
+            let count = 0
+            let root = data['geonames']
+
+            for (let i = 0; i < root.length; i++) {
+                if (count < 3) {
+                    let subroot = data['geonames'][i]
+                    let thisTypeOf = (subroot.fclName).substring(0, 4)
+
+                    if (thisTypeOf === 'city') {
+                        this.setStateForPopAndCity(
+                            this.spaceBetween(subroot.population),
+                            subroot.toponymName
+                        )
+                        count += 1
+                    }
+                    
+                } else {
+                    break
+                }
+            }
+            
         })
         .catch(console.log)
     }
@@ -137,6 +168,7 @@ class SearchBar extends React.Component {
                         cities={this.state.cities}
                         noInfo={this.state.noInfo}
                         countryName={this.state.countryName}
+                        countrySearch={this.props.countrySearch}
                     /> :
                     null
                 }

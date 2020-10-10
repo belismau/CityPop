@@ -11,6 +11,22 @@ class PresentInfo extends React.Component {
                     </h1>
                 </div>
             )
+        } else if (this.props.countrySearch) {
+            return (
+                <div className="PresentInfo">
+                    <h1> Resultat för
+                        <span> "{this.props.userInput}" </span>
+                    </h1>
+                    <div>
+                        <h4> {this.props.countryName} </h4>
+                        {this.props.cities.map((city) => (
+                            <div key={city}>
+                                <p key={city}> {city} </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )
         } else {
             return (
                 <div className="PresentInfo">
