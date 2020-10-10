@@ -29,13 +29,11 @@ class SearchBar extends React.Component {
             population: [],
             cities: [],
             noInfo: false,
-            countryName: '',
-            loading: false
+            countryName: ''
         })
 
         this.fetchCityInfo()
     }
-
 
     fetchCityInfo() {
         fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&maxRows=1&username=spopre2')
@@ -44,18 +42,36 @@ class SearchBar extends React.Component {
 
             let subroot = data['geonames'][0]
 
-            if ((subroot.fclName).substring(0, 4) === 'city') {
-                this.setStateForPopAndCity(
-                    this.spaceBetween(subroot.population),
-                    subroot.toponymName
-                )
+            if (this.props.countrySearch === true) {
+                try {
+                    if ((subroot.fclName).substring(0, 7) === 'country') {
+                        this.setState({
+                            countryCode: subroot.countryCode,
+                            countryName: subroot.countryName
+                        })
+                        console.log('This is a country-search')
+                    } else {
+                        this.setStateForNoInfo(true)
+                    }   
+                } catch {
+                    this.setStateForNoInfo(true)
+                }
                 
-                this.setState({
-                    countryName: subroot.countryName
-                })
             } else {
-                this.setStateForNoInfo(true)
+                if ((subroot.fclName).substring(0, 4) === 'city') {
+                    this.setStateForPopAndCity(
+                        this.spaceBetween(subroot.population), 
+                        subroot.toponymName
+                    )
+                    
+                    this.setState({
+                        countryName: subroot.countryName
+                    })
+                } else {
+                    this.setStateForNoInfo(true)
+                }
             }
+
         })
         .catch(console.log)
     }
