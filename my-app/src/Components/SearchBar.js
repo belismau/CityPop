@@ -46,7 +46,7 @@ class SearchBar extends React.Component {
 
             if ((subroot.fclName).substring(0, 4) === 'city') {
                 this.setStateForPopAndCity(
-                    subroot.population, 
+                    this.spaceBetween(subroot.population),
                     subroot.toponymName
                 )
                 
@@ -77,6 +77,20 @@ class SearchBar extends React.Component {
                 varCities
             ]
         })
+    }
+
+    spaceBetween(population) {
+        let popuToStr = population.toString()
+
+        if (popuToStr.length < 4) {
+            return population
+        }
+
+        for (let i = popuToStr.length - 3; i > 0; i -= 3) {
+            popuToStr = popuToStr.substring(0, i) + ' ' + popuToStr.substring(i);
+        }
+
+        return popuToStr
     }
 
     render() {
