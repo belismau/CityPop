@@ -12,6 +12,7 @@ class PresentInfo extends React.Component {
         }
 
         this.getPopulation = this.getPopulation.bind(this)
+        this.goBack = this.goBack.bind(this)
     }
 
     getPopulation(index) {
@@ -36,6 +37,14 @@ class PresentInfo extends React.Component {
                 })
             }
         });
+    }
+
+    goBack() {
+        this.setState({
+            curPopulation: null,
+            curIndex: null,
+            curCity: null
+        })
     }
 
     render() {
@@ -64,7 +73,7 @@ class PresentInfo extends React.Component {
                         </div>
                     :
                         <div>
-                            <div id="clickedCity">
+                            <div onClick={this.goBack} id="clickedCity">
                                 <p> {this.state.curCity} (Nr {this.state.curIndex + 1}) </p>
                                 <p> {this.state.curPopulation} </p>
                             </div>
