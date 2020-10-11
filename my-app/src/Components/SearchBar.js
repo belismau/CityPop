@@ -9,7 +9,8 @@ class SearchBar extends React.Component {
         this.state = {
             input: null,
             searched: false,
-            searchedValue: null
+            searchedValue: null,
+            loading: false
         }
 
         this.getValue = this.getValue.bind(this)
@@ -29,7 +30,8 @@ class SearchBar extends React.Component {
             population: [],
             cities: [],
             noInfo: false,
-            countryName: ''
+            countryName: '',
+            loading: true
         })
 
         this.fetchCityInfo()
@@ -71,7 +73,9 @@ class SearchBar extends React.Component {
                     this.setStateForNoInfo(true)
                 }
             }
-
+            this.setState({
+                loading: false,
+            })
         })
         .catch(console.log)
     }
@@ -160,6 +164,14 @@ class SearchBar extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                {this.state.loading ?
+                    <div id="loader">
+                        <p> Loading... </p>
+                    </div>
+                :
+                    null
+                }
 
                 {this.state.searched ?
                     <PresentInfo
