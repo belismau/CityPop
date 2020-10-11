@@ -2,6 +2,42 @@ import React from 'react';
 import './PresentInfo.css'
 
 class PresentInfo extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            curPopulation: null,
+            curIndex: null,
+            curCity: null
+        }
+
+        this.getPopulation = this.getPopulation.bind(this)
+    }
+
+    getPopulation(index) {
+        this.setState({
+            curIndex: index
+        })
+
+        // eslint-disable-next-line
+        this.props.population.map((popul, popIndex) => {
+            if (popIndex === index) {
+                this.setState({
+                    curPopulation: popul
+                })
+            }
+        });
+
+        // eslint-disable-next-line
+        this.props.cities.map((city, cityIndex) => {
+            if (cityIndex === index) {
+                this.setState({
+                    curCity: city
+                })
+            }
+        });
+    }
+
     render() {
         if (this.props.noInfo) {
             return (
@@ -17,14 +53,23 @@ class PresentInfo extends React.Component {
                     <h1> Resultat för
                         <span> "{this.props.userInput}" </span>
                     </h1>
-                    <div>
-                        <h4> {this.props.countryName} </h4>
-                        {this.props.cities.map((city) => (
-                            <div key={city}>
-                                <p key={city}> {city} </p>
+                    {this.state.curPopulation === null ?
+                        <div>
+                            <h4> {this.props.countryName} </h4>
+                            {this.props.cities.map((city, index) => (
+                                <div key={city} entry={index} onClick={(e) => this.getPopulation(index)}>
+                                    <p key={city}> {city} </p>
+                                </div>
+                            ))}
+                        </div>
+                    :
+                        <div>
+                            <div id="clickedCity">
+                                <p> {this.state.curCity} (Nr {this.state.curIndex + 1}) </p>
+                                <p> {this.state.curPopulation} </p>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    }
                 </div>
             )
         } else {
