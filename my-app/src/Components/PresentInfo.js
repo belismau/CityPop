@@ -16,6 +16,7 @@ class PresentInfo extends React.Component {
     }
 
     getPopulation(index) {
+
         this.setState({
             curIndex: index
         })
@@ -48,6 +49,13 @@ class PresentInfo extends React.Component {
     }
 
     render() {
+        if (this.props.loading) {
+            return (
+                <div id="loader">
+                    <p> Loading... </p>
+                </div>
+            )
+        }
         if (this.props.noInfo) {
             return (
                 <div className="PresentInfo">
@@ -58,6 +66,7 @@ class PresentInfo extends React.Component {
             )
         } else if (this.props.countrySearch) {
             return (
+                
                 <div className="PresentInfo">
                     <h1> Resultat för
                         <span> "{this.props.userInput}" </span>

@@ -46,16 +46,19 @@ class SearchBar extends React.Component {
 
             if (this.props.countrySearch === true) {
                 try {
-                    if ((subroot.fclName).substring(0, 7) === 'country') {
+                    if (subroot.fcode === 'PCLI') {
                         this.setState({
                             countryCode: subroot.countryCode,
                             countryName: subroot.countryName
                         })
                         this.fetchCountryInfo()
                     } else {
-                        this.setStateForNoInfo(true)
+                        throw new Error()
                     }   
                 } catch {
+                    this.setState({
+                        loading: false,
+                    })
                     this.setStateForNoInfo(true)
                 }
                 
@@ -72,20 +75,23 @@ class SearchBar extends React.Component {
                 } else {
                     this.setStateForNoInfo(true)
                 }
+                this.setState({
+                    loading: false,
+                })
             }
-            this.setState({
-                loading: false,
-            })
         })
         .catch(console.log)
     }
-
 
     fetchCountryInfo() {
         fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&country=' + this.state.countryCode + '&orderby=population&username=spopre2')
         .then(res => res.json())
         .then((data) => {
 
+            this.setState({
+                loading: false,
+            })
+            
             let count = 0
             let root = data['geonames']
 
@@ -111,6 +117,20 @@ class SearchBar extends React.Component {
         .catch(console.log)
     }
 
+    spaceBetween(population) {
+        let popuToStr = population.toString()
+
+        if (popuToStr.length < 4) {
+            return population
+        }
+
+        for (let i = popuToStr.length - 3; i > 0; i -= 3) {
+            popuToStr = popuToStr.substring(0, i) + ' ' + popuToStr.substring(i);
+        }
+
+        return popuToStr
+    }
+
     setStateForNoInfo(boolean) {
         this.setState({
             noInfo: boolean
@@ -130,27 +150,13 @@ class SearchBar extends React.Component {
         })
     }
 
-    spaceBetween(population) {
-        let popuToStr = population.toString()
-
-        if (popuToStr.length < 4) {
-            return population
-        }
-
-        for (let i = popuToStr.length - 3; i > 0; i -= 3) {
-            popuToStr = popuToStr.substring(0, i) + ' ' + popuToStr.substring(i);
-        }
-
-        return popuToStr
-    }
-
     render() {
         return (
             <main className="SearchBar">
                 <div>
                     <div>
                         <input 
-                            type="text"
+                            type="text" 
                             onChange={this.getValue}
                             placeholder={this.props.newPlaceholder}
                         />
@@ -165,14 +171,6 @@ class SearchBar extends React.Component {
                     </div>
                 </div>
 
-                {this.state.loading ?
-                    <div id="loader">
-                        <p> Loading... </p>
-                    </div>
-                :
-                    null
-                }
-
                 {this.state.searched ?
                     <PresentInfo
                         userInput={this.state.searchedValue}
@@ -181,10 +179,11 @@ class SearchBar extends React.Component {
                         noInfo={this.state.noInfo}
                         countryName={this.state.countryName}
                         countrySearch={this.props.countrySearch}
-                    /> :
+                        loading={this.state.loading}
+                    />
+                :
                     null
-                }
-
+                }                
             </main>
         )
     }
