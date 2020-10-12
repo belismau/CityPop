@@ -3,7 +3,7 @@ import {StyleSheet, css} from 'aphrodite-jss'
 
 const styles = StyleSheet.create({
     'noInfo': {
-        background: 'rgb(144, 144, 144)',
+        background: 'rgb(155, 155, 155)',
         margin: '0 auto',
         padding: '25px',
         maxWidth: '700px',
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         marginTop: '40px',
 
         '& > h1': {
-            color: 'rgb(211, 211, 211)',
+            color: 'rgb(210, 210, 210)',
             textAlign: 'center',
             fontSize: '30px',
 

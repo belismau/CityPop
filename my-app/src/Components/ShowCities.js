@@ -7,14 +7,14 @@ const styles = StyleSheet.create({
         display: 'grid',
         gridTemplateColumns: '1fr',
         color: 'white',
-        background: 'rgb(102, 102, 102)',
+        background: 'rgb(152, 152, 152)',
         minWidth: '280px',
         gap: '3px',
         marginTop: '20px',
 
         '& > h4': {
-            color: 'rgb(73, 73, 73)',
-            background: 'rgb(109, 109, 109)',
+            color: 'rgb(177, 177, 177)',
+            background: 'rgb(132, 132, 132)',
             textAlign: 'center',
             padding: '20px',
             textTransform: 'uppercase'
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         '& > div': {
             textAlign: 'center',
             padding: '20px',
-            backgroundColor: 'rgb(124, 124, 124)',
+            backgroundColor: 'rgb(140, 140, 140)',
             cursor: 'pointer',
             margin: '0'
         },

@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from './Components/Header'
-import ChooseSearch from './Components/ChooseSearch';
+import Header from './Header'
+import ChooseSearch from './ChooseSearch';
 
 class App extends React.Component {
     render() {

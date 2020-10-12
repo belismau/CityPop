@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         fontSize: '20px',
         textAlign: 'center',
         padding: '20px',
-        backgroundColor: 'rgb(124, 124, 124)',
+        backgroundColor: 'rgb(138, 138, 138)',
         cursor: 'pointer',
         display: 'grid',
         gridTemplateColumns: '1fr',
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         minWidth: '280px',
         gap: '3px',
         marginTop: '20px',
+        borderRadius: '4px',
 
         '& > p:nth-child(1)': {
             color: 'rgb(221, 221, 221)'

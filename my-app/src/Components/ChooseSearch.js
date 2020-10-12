@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
             alignItems: 'center',
 
             '& > p': {
-                color: 'rgb(235, 235, 235)',
+                color: 'rgb(222, 222, 222)',
                 textAlign: 'center',
-                background: 'rgb(153, 153, 153)',
+                background: 'rgb(160, 160, 160)',
                 margin: '20px',
-                padding: '15px 20px',
+                padding: '15px 25px',
                 cursor: 'pointer',
                 borderRadius: '3px'
             }
