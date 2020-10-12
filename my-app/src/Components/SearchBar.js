@@ -121,18 +121,23 @@ class SearchBar extends React.Component {
                 }
                 
             } else {
-                if ((subroot.fclName).substring(0, 4) === 'city') {
-                    this.setStateForPopAndCity(
-                        this.spaceBetween(subroot.population), 
-                        subroot.toponymName
-                    )
-                    
-                    this.setState({
-                        countryName: subroot.countryName
-                    })
-                } else {
+                try {
+                    if ((subroot.fclName).substring(0, 4) === 'city') {
+                        this.setStateForPopAndCity(
+                            this.spaceBetween(subroot.population), 
+                            subroot.toponymName
+                        )
+                        
+                        this.setState({
+                            countryName: subroot.countryName
+                        })
+                    } else {
+                        throw new Error()
+                    }
+                } catch {
                     this.setStateForNoInfo(true)
                 }
+                
                 this.setState({
                     loading: false,
                 })
