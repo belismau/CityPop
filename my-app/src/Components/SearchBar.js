@@ -1,6 +1,64 @@
 import React from 'react'
 import PresentInfo from './PresentInfo'
-import './SearchBar.css'
+import {StyleSheet, css} from 'aphrodite-jss'
+
+const styles = StyleSheet.create({
+    'searchBar': {
+        padding: '40px 25px',
+        backgroundColor: 'rgb(175, 175, 175)',
+        borderTop: '2px solid rgb(163, 163, 163)',
+        borderBottom: '2px solid rgb(163, 163, 163)',
+
+        '& > div': {
+            display: 'flex',
+            alignItems: 'center',
+            jusitfyContent: 'center',
+            flexDirection: 'column',
+
+            '& > p': {
+                color: 'rgb(112, 112, 112)',
+                marginTop: '10px',
+                cursor: 'pointer'
+            },
+
+            '& > div': {
+                position: 'relative',
+
+                '& > input': {
+                    outline: 'none',
+                    padding: '10px 20px',
+                    border: '1px solid rgb(168, 168, 168)',
+                    background: 'rgb(228, 228, 228)',
+                    color: 'rgb(97, 97, 97)',
+                    borderRadius: '40px',
+                    boxShadow: '0 0 2px rgb(112, 112, 112)',
+                    width: '250px'
+                }
+            }
+        }
+    },
+
+    'searchIcon': {
+        top: '50%',
+        position: 'absolute',
+        transform: 'translateY(-50%)',
+        right: '4px',
+        padding: '20px',
+        height: '30px',
+        width: '30px',
+        background: 'transparent',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        borderRadius: '40px',
+
+        '& > img': {
+            height: '18px',
+            width: '18px'
+        }
+    },
+})
 
 class SearchBar extends React.Component {
     constructor() {
@@ -152,7 +210,7 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <main className="SearchBar">
+            <main className={css(styles.searchBar)}>
                 <div>
                     <div>
                         <input 
@@ -161,7 +219,7 @@ class SearchBar extends React.Component {
                             placeholder={this.props.newPlaceholder}
                         />
                         <div 
-                            className="SearchIcon"
+                            className={css(styles.searchIcon)}
                             onClick={this.setSearchValue}>
                             <img
                                 src="https://secure.webtoolhub.com/static/resources/icons/set103/ce6535a5.png"
