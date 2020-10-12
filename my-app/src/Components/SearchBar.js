@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
             height: '18px',
             width: '18px'
         }
-    },
+    }
 })
 
 class SearchBar extends React.Component {
@@ -71,111 +71,144 @@ class SearchBar extends React.Component {
             loading: false
         }
 
-        this.getValue = this.getValue.bind(this)
-        this.setSearchValue = this.setSearchValue.bind(this)
+        this.getInputValue = this.getInputValue.bind(this)
+        this.beginSearch = this.beginSearch.bind(this)
     }
 
-    getValue(e) {
+    getInputValue(e) {
         this.setState({
             input: e.target.value
         })
     }
 
-    setSearchValue() {
+    beginSearch() {
+        this.addSearchedValue()
+        this.resetValues()
+        this.addLoader()
+        this.fetchData()
+    }
+
+    resetValues() {
         this.setState({
-            searched: true,
-            searchedValue: this.state.input,
             population: [],
             cities: [],
             noInfo: false,
-            countryName: '',
-            loading: true
+            countryName: ''
         })
-
-        this.fetchCityInfo()
+    }
+    
+    addSearchedValue() {
+        this.setState({
+            searched: true,
+            searchedValue: this.state.input,
+        })
     }
 
-    fetchCityInfo() {
-        fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&maxRows=1&username=spopre2')
-        .then(res => res.json())
-        .then((data) => {
+    findCountry(countryData) {
+        let i = 0
 
-            let subroot = data['geonames'][0]
+        while (i < countryData.length) {
+            if (countryData[i].fcode === 'PCLI') {
+                this.setState({
+                    countryCode: countryData[i].countryCode,
+                    countryName: countryData[i].countryName
+                })
 
-            if (this.props.countrySearch === true) {
-                try {
-                    if (subroot.fcode === 'PCLI') {
-                        this.setState({
-                            countryCode: subroot.countryCode,
-                            countryName: subroot.countryName
-                        })
-                        this.fetchCountryInfo()
-                    } else {
-                        throw new Error()
-                    }   
-                } catch {
-                    this.setState({
-                        loading: false,
-                    })
-                    this.setStateForNoInfo(true)
+                this.fetchCountryData()
+
+                return true
+            }
+
+            i += 1
+        }
+
+        return false
+    }
+
+    findCity(cityData) {
+        let i = 0
+
+        while (i < cityData.length) {
+            if (cityData[i].fcode === 'PCLI') {
+                break
+            }
+
+            if (cityData[i].fcl === 'P') {
+                if ((this.state.input).toLowerCase() !== (cityData[i].toponymName).toLowerCase()) {
+                    break
+                }
+
+                this.addPopulationAndCity(
+                    this.spaceBetween(cityData[i].population), 
+                    cityData[i].toponymName
+                )
+                
+                this.setState({
+                    countryName: cityData[i].countryName
+                })
+
+                return true
+            }
+
+            i += 1
+        }
+
+        return false
+    }
+
+    addCities(data) {
+        let count = 0
+
+        for (let i = 0; i < data.length; i++) {
+            if (count < 3) {
+                if (data[i].fcl === 'P') {
+                    this.addPopulationAndCity(
+                        this.spaceBetween(data[i].population),
+                        data[i].toponymName
+                    )
+                    count += 1
                 }
                 
             } else {
-                try {
-                    if ((subroot.fclName).substring(0, 4) === 'city') {
-                        this.setStateForPopAndCity(
-                            this.spaceBetween(subroot.population), 
-                            subroot.toponymName
-                        )
-                        
-                        this.setState({
-                            countryName: subroot.countryName
-                        })
-                    } else {
-                        throw new Error()
-                    }
-                } catch {
-                    this.setStateForNoInfo(true)
+                break
+            }
+        }
+    }
+
+    fetchData() {
+        fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&username=spopre2')
+        .then(res => res.json())
+        .then((data) => {
+
+            if (this.props.countrySearch === true) {
+                let foundCountry = this.findCountry(data['geonames'])
+
+                if (foundCountry === false) {
+                    this.removeLoader()
+                    this.addNoInfo(true)
                 }
                 
-                this.setState({
-                    loading: false,
-                })
+            } else {
+                let foundCity = this.findCity(data['geonames'])
+
+                if (foundCity === false) {
+                    this.addNoInfo(true)
+                }
+                
+                this.removeLoader()
             }
         })
         .catch(console.log)
     }
 
-    fetchCountryInfo() {
-        fetch('http://api.geonames.org/searchJSON?&q=' + this.state.input + '&country=' + this.state.countryCode + '&orderby=population&username=spopre2')
+    fetchCountryData() {
+        fetch('http://api.geonames.org/searchJSON?&q=' + 
+               this.state.input + '&country=' + this.state.countryCode + 
+               '&orderby=population&username=spopre2')
         .then(res => res.json())
         .then((data) => {
-
-            this.setState({
-                loading: false,
-            })
-            
-            let count = 0
-            let root = data['geonames']
-
-            for (let i = 0; i < root.length; i++) {
-                if (count < 3) {
-                    let subroot = data['geonames'][i]
-                    let thisTypeOf = (subroot.fclName).substring(0, 4)
-
-                    if (thisTypeOf === 'city') {
-                        this.setStateForPopAndCity(
-                            this.spaceBetween(subroot.population),
-                            subroot.toponymName
-                        )
-                        count += 1
-                    }
-                    
-                } else {
-                    break
-                }
-            }
-            
+            this.removeLoader()
+            this.addCities(data['geonames'])
         })
         .catch(console.log)
     }
@@ -194,13 +227,25 @@ class SearchBar extends React.Component {
         return popuToStr
     }
 
-    setStateForNoInfo(boolean) {
+    addNoInfo(value) {
         this.setState({
-            noInfo: boolean
+            noInfo: value
         })
     }
 
-    setStateForPopAndCity(varPopulation, varCities) {
+    addLoader() {
+        this.setState({
+            loading: true
+        })
+    }
+
+    removeLoader() {
+        this.setState({
+            loading: false
+        })
+    }
+
+    addPopulationAndCity(varPopulation, varCities) {
         this.setState({
             population: [
                 ...this.state.population,
@@ -220,12 +265,12 @@ class SearchBar extends React.Component {
                     <div>
                         <input 
                             type="text" 
-                            onChange={this.getValue}
+                            onChange={this.getInputValue}
                             placeholder={this.props.newPlaceholder}
                         />
                         <div 
                             className={css(styles.searchIcon)}
-                            onClick={this.setSearchValue}>
+                            onClick={this.beginSearch}>
                             <img
                                 src="https://secure.webtoolhub.com/static/resources/icons/set103/ce6535a5.png"
                                 alt="Search"
