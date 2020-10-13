@@ -4,6 +4,7 @@ import Loader from './Loader';
 import NoInfo from './NoInfo';
 import ShowCities from './ShowCities';
 import ShowCityPopulation from './ShowCityPopulation';
+import ResultText from './ResultText';
 
 const styles = StyleSheet.create({
     'presentInfo': {
@@ -13,16 +14,6 @@ const styles = StyleSheet.create({
         maxWidth: '700px',
         borderRadius: '4px',
         marginTop: '40px',
-
-        '& > h1': {
-            color: 'rgb(210, 210, 210)',
-            textAlign: 'center',
-            fontSize: '30px',
-
-            '& > span': {
-                color: 'white'
-            }
-        },
 
         '& > div': {
             '@media screen and (max-width: 550px)': {
@@ -42,18 +33,14 @@ class PresentInfo extends React.Component {
 
         if (this.props.noInfo) {
             return (
-                <NoInfo 
-                    userInput={this.props.userInput}
-                />
+                <NoInfo userInput={this.props.userInput} />
             )
         }
 
         if (this.props.countrySearch) {
             return (
                 <div className={css(styles.presentInfo)}>
-                    <h1> Resultat för
-                        <span> "{this.props.userInput}" </span>
-                    </h1>
+                    <ResultText userInput={this.props.userInput} />
                     <ShowCities 
                         countryName={this.props.countryName}
                         cities={this.props.cities}
@@ -65,9 +52,7 @@ class PresentInfo extends React.Component {
         
         return (
             <div className={css(styles.presentInfo)}>
-                <h1> Resultat för
-                    <span> "{this.props.userInput}" </span>
-                </h1>
+                <ResultText userInput={this.props.userInput} />
                 <ShowCityPopulation
                     goBack={null}
                     curCity={this.props.cities}

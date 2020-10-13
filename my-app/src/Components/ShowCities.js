@@ -50,14 +50,20 @@ class ShowCities extends React.Component {
 
     getInfoAboutCity(index) {
         this.addIndex(index)
+        this.getClickedPopulation(index)
+        this.getClickedCity(index)
+    }
 
+    getClickedPopulation(index) {
         // eslint-disable-next-line
         this.props.population.map((popul, popIndex) => {
             if (popIndex === index) {
                 this.addPopulation(popul)
             }
         });
+    }
 
+    getClickedCity(index) {
         // eslint-disable-next-line
         this.props.cities.map((city, cityIndex) => {
             if (cityIndex === index) {
