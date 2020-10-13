@@ -158,21 +158,11 @@ class SearchBar extends React.Component {
     }
 
     addCities(data) {
-        let count = 0
-
         for (let i = 0; i < data.length; i++) {
-            if (count < 3) {
-                if (data[i].fcl === 'P') {
-                    this.addPopulationAndCity(
-                        this.spaceBetween(data[i].population),
-                        data[i].toponymName
-                    )
-                    count += 1
-                }
-                
-            } else {
-                break
-            }
+            this.addPopulationAndCity(
+                this.spaceBetween(data[i].population),
+                data[i].toponymName
+            )
         }
     }
 
@@ -203,9 +193,12 @@ class SearchBar extends React.Component {
     }
 
     fetchCountryData() {
-        fetch('http://api.geonames.org/searchJSON?&q=' + 
-               this.state.input + '&country=' + this.state.countryCode + 
-               '&orderby=population&username=spopre2')
+        fetch('http://api.geonames.org/searchJSON?' +
+              '&country=' + this.state.countryCode +
+              '&featureClass=P' +
+              '&maxRows=3' +
+              '&orderby=population' +
+              '&username=spopre2')
         .then(res => res.json())
         .then((data) => {
             this.removeLoader()
