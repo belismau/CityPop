@@ -1,6 +1,7 @@
 import React from 'react'
 import PresentInfo from './PresentInfo'
 import {StyleSheet, css} from 'aphrodite-jss'
+import icon from '../Components/searchIcon.png';
 
 const styles = StyleSheet.create({
     'searchBar': {
@@ -272,7 +273,7 @@ class SearchBar extends React.Component {
                             className={css(styles.searchIcon)}
                             onClick={this.beginSearch}>
                             <img
-                                src="https://secure.webtoolhub.com/static/resources/icons/set103/ce6535a5.png"
+                                src={icon}
                                 alt="Search"
                             />
                         </div>
