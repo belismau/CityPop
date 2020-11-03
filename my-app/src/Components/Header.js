@@ -10,6 +10,14 @@ const styles = StyleSheet.create({
             color: 'rgb(129, 129, 129)',
             textAlign: 'center'
         }
+    },
+    'subheader': {
+        color: 'rgb(129, 129, 129)',
+        maxWidth: '400px',
+        margin: '0 auto',
+        textAlign: 'center',
+        marginTop: '10px',
+        padding: '0 30px'
     }
 });
 
@@ -18,6 +26,13 @@ class Header extends React.Component {
         return (
             <header className={css(styles.header)}>
                 <h2> CityPop </h2>
+                <div className={css(styles.subheader)}>
+                    <p> 
+                        A web application that presents the 
+                        population of a city or top three 
+                        largest cities in a country.
+                    </p>
+                </div>
             </header>
         )
     }

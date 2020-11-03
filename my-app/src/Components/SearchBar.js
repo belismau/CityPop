@@ -2,6 +2,7 @@ import React from 'react'
 import PresentInfo from './PresentInfo'
 import {StyleSheet, css} from 'aphrodite-jss'
 import icon from '../Components/searchIcon.png';
+import arrow from '../Components/arrowBack.png';
 
 const styles = StyleSheet.create({
     'searchBar': {
@@ -57,6 +58,20 @@ const styles = StyleSheet.create({
         '& > img': {
             height: '18px',
             width: '18px'
+        }
+    },
+    'previousDiv': {
+        cursor: 'pointer',
+        maxWidth: '0',
+        marginBottom: '15px',
+        margin: '0 auto',
+        position: 'fixed',
+        top: '15px',
+        left: '25px',
+
+        '& > img': {
+            height: '25px',
+            width: '25px'
         }
     }
 })
@@ -127,31 +142,31 @@ class SearchBar extends React.Component {
     }
 
     findCity(cityData) {
-        let i = 0
-
-        while (i < cityData.length) {
-            if (cityData[i].fcode === 'PCLI') {
+        for (let j = 0; j < cityData.length; j++) {
+            if (cityData[j].fcode === 'PCLI') {
                 break
             }
 
-            if (cityData[i].fcl === 'P') {
-                if ((this.state.input).toLowerCase() !== (cityData[i].toponymName).toLowerCase()) {
-                    break
+            if (cityData[j].fcl === 'P') {
+                try {
+                    if ((this.state.input).toLowerCase() !== (cityData[j].toponymName).toLowerCase()) {
+                        break
+                    }
+                } catch {
+                    return false
                 }
 
                 this.addPopulationAndCity(
-                    this.spaceBetween(cityData[i].population), 
-                    cityData[i].toponymName
+                    this.spaceBetween(cityData[j].population), 
+                    cityData[j].toponymName
                 )
                 
                 this.setState({
-                    countryName: cityData[i].countryName
+                    countryName: cityData[j].countryName
                 })
 
                 return true
             }
-
-            i += 1
         }
 
         return false
@@ -255,6 +270,15 @@ class SearchBar extends React.Component {
     render() {
         return (
             <main className={css(styles.searchBar)}>
+                <div
+                    onClick={this.props.goToPrevious}
+                    className={css(styles.previousDiv)}>
+                    <img 
+                        src={arrow}
+                        alt="arrow"
+                    />
+                </div>
+
                 <div>
                     <div>
                         <input 

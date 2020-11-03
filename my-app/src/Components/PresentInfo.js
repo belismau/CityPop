@@ -13,13 +13,7 @@ const styles = StyleSheet.create({
         padding: '40px 25px',
         maxWidth: '700px',
         borderRadius: '4px',
-        marginTop: '40px',
-
-        '& > div': {
-            '@media screen and (max-width: 550px)': {
-                minWidth: '100%'
-            }
-        }
+        marginTop: '40px'
     }
 });
 

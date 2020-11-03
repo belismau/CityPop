@@ -5,19 +5,24 @@ const styles = StyleSheet.create({
     'clickedCity': {
         fontSize: '20px',
         textAlign: 'center',
-        padding: '20px',
-        backgroundColor: 'rgb(138, 138, 138)',
-        cursor: 'pointer',
-        display: 'grid',
-        gridTemplateColumns: '1fr',
         color: 'white',
-        minWidth: '280px',
-        gap: '3px',
-        marginTop: '20px',
-        borderRadius: '4px',
+        maxWidth: '300px',
 
-        '& > p:nth-child(1)': {
-            color: 'rgb(221, 221, 221)'
+        '& > p': {
+            color: 'rgb(216, 216, 216)',
+
+            '& > span': {
+                color: 'white'
+            }
+        },
+
+        '& > div': {
+            marginTop: '30px',
+            background: '#929292',
+            color: '#6f6f6f',
+            padding: '10px 25px',
+            cursor: 'pointer',
+            display: 'inline-block'
         }
     },
 
@@ -40,16 +45,20 @@ class ShowCityPopulation extends React.Component {
         return (
             <div>
                 {this.props.curIndex != null ?
-                    <div 
-                        onClick={this.props.goBack}
+                    <div
                         className={css(styles.clickedCity)}>
-                        <p> {this.props.curCity} (Nr {this.props.curIndex + 1}) </p>
-                        <p> {this.props.curPopulation} </p>
+                        <p> Population in the city called 
+                            <span> {this.props.curCity} </span> is 
+                            <span> {this.props.curPopulation}</span>.
+                        </p>
+                        <div onClick={this.props.goBack}> Go back </div>
                     </div>
                 :
                     <div className={css(styles.clickedCity)}>
-                        <p> {this.props.curCity} </p>
-                        <p> {this.props.curPopulation} </p>
+                        <p> Population in the city called 
+                            <span> {this.props.curCity} </span> is 
+                            <span> {this.props.curPopulation}</span>.
+                        </p>
                     </div>
                 }
             </div>

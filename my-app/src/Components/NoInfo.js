@@ -26,7 +26,7 @@ class NoInfo extends React.Component {
     render() {
         return (
             <div className={css(styles.noInfo)}>
-                <h1> Inga resultat för
+                <h1> No result for
                     <span> "{this.props.userInput}" </span>
                 </h1>
             </div>

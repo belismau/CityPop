@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
         marginTop: '20px',
 
         '& > h4': {
-            color: 'rgb(177, 177, 177)',
-            background: 'rgb(132, 132, 132)',
+            color: 'rgb(173, 173, 173)',
+            background: 'rgb(136, 136, 136)',
             textAlign: 'center',
             padding: '20px',
             textTransform: 'uppercase'
@@ -23,13 +23,10 @@ const styles = StyleSheet.create({
         '& > div': {
             textAlign: 'center',
             padding: '20px',
-            backgroundColor: 'rgb(140, 140, 140)',
+            backgroundColor: 'rgb(144, 144, 144)',
             cursor: 'pointer',
-            margin: '0'
-        },
-
-        '@media screen and (max-width: 550px)': {
-            minWidth: '100%'
+            margin: '0',
+            color: '#dcdcdc'
         }
     }
 })

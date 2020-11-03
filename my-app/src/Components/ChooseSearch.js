@@ -11,19 +11,51 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
 
-        '& > div': {
-            display: 'flex',
-            alignItems: 'center',
+        '@media screen and (max-width: 500px)': {
+            flexDirection: 'column',
+            minWidth: 'unset',
+        },
+    },
+    
+    'chooseSearchBox': {
+        '@media screen and (max-width: 500px)': {
+            display: 'unset'
+        },
 
-            '& > p': {
-                color: 'rgb(222, 222, 222)',
-                textAlign: 'center',
-                background: 'rgb(160, 160, 160)',
-                margin: '20px',
-                padding: '15px 25px',
-                cursor: 'pointer',
-                borderRadius: '3px'
-            }
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    'cityBox': {
+        color: 'rgb(222, 222, 222)',
+        textAlign: 'center',
+        background: 'rgb(160, 160, 160)',
+        margin: '20px',
+        padding: '15px 25px',
+        cursor: 'pointer',
+        borderRadius: '3px',
+
+        '@media screen and (max-width: 500px)': {
+            marginLeft: '30px',
+            marginRight: '30px',
+            marginBottom: '10px'
+        }
+    },
+
+    'countryBox': {
+        color: 'rgb(222, 222, 222)',
+        textAlign: 'center',
+        background: 'rgb(160, 160, 160)',
+        margin: '20px',
+        padding: '15px 25px',
+        cursor: 'pointer',
+        borderRadius: '3px',
+
+        '@media screen and (max-width: 500px)': {
+            marginLeft: '30px',
+            marginRight: '30px',
+            marginTop: '10px'
         }
     }
 });
@@ -39,13 +71,15 @@ class ChooseSearch extends React.Component {
 
         this.searchByCity = this.searchByCity.bind(this)
         this.searchByCountry = this.searchByCountry.bind(this)
+        this.goToPrevious = this.goToPrevious.bind(this)
     }
 
     searchByCity() {
         this.setState({
             chosen: true,
             placeholder: 'Enter a city...',
-            countrySearch: false
+            countrySearch: false,
+            previous: false
         })
     }
 
@@ -53,25 +87,41 @@ class ChooseSearch extends React.Component {
         this.setState({
             chosen: true,
             placeholder: 'Enter a country...',
-            countrySearch: true
+            countrySearch: true,
+            previous: false
+        })
+    }
+
+    goToPrevious() {
+        this.setState({
+            previous: true
         })
     }
     
     render() {
-        if (this.state.chosen === false) {
+        if (this.state.previous || this.state.chosen === false) {
             return (
                 <div className={css(styles.chooseSearch)}>
-                    <div onClick={this.searchByCity}> 
-                        <p> Search by city </p>
+                    <div className={css(styles.chooseSearchBox)}> 
+                        <p 
+                            className={css(styles.cityBox)} 
+                            onClick={this.searchByCity}> 
+                            Search by city 
+                        </p>
                     </div>
-                    <div onClick={this.searchByCountry}> 
-                        <p> Search by country </p>
+                    <div className={css(styles.chooseSearchBox)}> 
+                        <p 
+                            className={css(styles.countryBox)} 
+                            onClick={this.searchByCountry}> 
+                            Search by country 
+                        </p>
                     </div>
                 </div>
             )
         } else {
             return (
-                <SearchBar 
+                <SearchBar
+                    goToPrevious={this.goToPrevious}
                     newPlaceholder={this.state.placeholder}
                     countrySearch={this.state.countrySearch}
                 />
